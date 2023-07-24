@@ -1,6 +1,7 @@
 import model.citas as citModel
 import datetime
-import operator
+from operator import getitem
+from collections import OrderedDict
 
 
 def waitExit():
@@ -122,21 +123,56 @@ def updateCita(fileName):
 def listData(fileName):
     citModel.checkFile(fileName)
     data = citModel.getData(fileName)
-    print(data)
-    print(len(data))
+    #print(data)
+    #print(len(data))
     if len(data) < 1:
         print('There are no medical appointments in the DB !!')
     else:
-        print('')
-        print('-'*90)
-        print('-'*37 + ' Citas Médicas ' + '-'*38)
-        print('-'*90)
-        print('{:^17}{:^20}{:^25}{:^25}'.format('Id', 'Name of Patient', 'Date of Appoinment', 'Time of Appointment' ))
-        for keyAp, valAp in data.items():
-            #print(f'{keyAp} -- {valAp}')
-            print('{:^17}{:^20}{:^25}{:^25}'.format(keyAp, valAp['Name'], valAp['Date'], valAp['Time']))
-        print('')
-    waitExit()
+        contListDat = True
+        while contListDat:
+            print('-'*15 + ' Citas Médicas ' + '-'*15)
+            print('1) List all Appointments \n2) List Appointments by date \n3) List Appointments by Patient \n4) Exit App')
+            rtaList = int(input('Enter the number of the option you want: '))
+            if rtaList == 1:    
+                print('')
+                print('-'*90)
+                print('-'*37 + ' Citas Médicas ' + '-'*38)
+                print('-'*90)
+                print('{:^17}{:^20}{:^25}{:^25}'.format('Id', 'Name of Patient', 'Date of Appoinment', 'Time of Appointment' ))
+                for keyAp, valAp in data.items():
+                    print('{:^17}{:^20}{:^25}{:^25}'.format(keyAp, valAp['Name'], valAp['Date'], valAp['Time']))
+                print('')
+                waitExit()
+            elif rtaList == 2:
+                newData = dict(OrderedDict(sorted(data.items(), key = lambda x: getitem(x[1], 'Date'), reverse=True)))
+                print('')
+                print('-'*90)
+                print('-'*37 + ' Citas Médicas ' + '-'*38)
+                print('-'*90)
+                print('{:^17}{:^20}{:^25}{:^25}'.format('Id', 'Name of Patient', 'Date of Appoinment', 'Time of Appointment' ))
+                for keyAp, valAp in newData.items():
+                    print('{:^17}{:^20}{:^25}{:^25}'.format(keyAp, valAp['Name'], valAp['Date'], valAp['Time']))
+                print('')
+                waitExit()
+            elif rtaList == 3:
+                #print(data)
+                namePati = input('Enter the Patient Name: ').lower()
+                print('-'*90)
+                print('-'*37 + ' Citas Médicas ' + '-'*38)
+                print('-'*90)
+                print('')
+                print('{:^17}{:^20}{:^25}{:^25}'.format('Id', 'Name of Patient', 'Date of Appoinment', 'Time of Appointment' ))
+                print('')
+                if any(namePati in datosDic.values() for datosDic in data.values()):
+                    for keyDat, ValDat in data.items():
+                        if namePati == ValDat['Name']:
+                            print('{:^17}{:^20}{:^25}{:^25}'.format(keyDat, ValDat['Name'], ValDat['Date'], ValDat['Time']))
+                    waitExit()
+                else:
+                    print(f'There are no medical appointments for the patient: {namePati}')         
+            elif rtaList == 4:
+                contListDat = False
+
     
 def deleteApp(fileName):
     citModel.checkFile(fileName)

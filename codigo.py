@@ -1,3 +1,6 @@
+from operator import getitem
+from collections import OrderedDict
+
 """ try:
     patDatDay = input('Enter the Day, Exampe "5": ')
     veriDataType(patDatDay, 'num', )
@@ -23,3 +26,43 @@ except ValueError as e:
         patDatYear = int(input('Enter the Minutes, remember the Minutes must be a number between "6" and "20" : '))
     patTime = f'{patTimHour}:{patTimMinu}'
     print(f'patTime = {patTime}')"""
+    
+''' newData = dict(OrderedDict(sorted(data.items(), key = lambda x: getitem(x[1], 'Name'))))
+print('')
+print('-'*90)
+print('-'*37 + ' Citas Médicas ' + '-'*38)
+print('-'*90)
+print('{:^17}{:^20}{:^25}{:^25}'.format('Id', 'Name of Patient', 'Date of Appoinment', 'Time of Appointment' ))
+for keyAp, valAp in newData.items():
+    #print(f'{keyAp} -- {valAp}')
+    print('{:^17}{:^20}{:^25}{:^25}'.format(keyAp, valAp['Name'], valAp['Date'], valAp['Time']))
+print('')
+waitExit() '''
+    
+    
+dici = {
+            "1": {
+                "Name": "william",
+                "Date": "2023-08-05",
+                "Time": 52500.0,
+                "Reason": "prueba"
+            },
+            "2": {
+                "Name": "carlos",
+                "Date": "2023-11-30",
+                "Time": 26100.0,
+                "Reason": "prueba 2"
+            },
+            "3": {
+                "Name": "eduardo",
+                "Date": "2022-10-30",
+                "Time": 26100.0,
+                "Reason": "prueba 3"
+            }
+    }
+#print(sorted(dici, key=lambda x: x['Date']))
+#print(sorted(dici, key=operator.itemgetter('Date')))
+newDicci = dict(OrderedDict(sorted(dici.items(), key = lambda x: getitem(x[1], 'Date'), reverse=True)))
+newDicci1 = OrderedDict(sorted(dici.items(), key = lambda x: getitem(x[1], 'Date')))
+print(newDicci)
+print(newDicci1)
